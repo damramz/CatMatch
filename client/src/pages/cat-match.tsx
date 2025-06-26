@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SwipeScreen from "@/components/swipe-screen";
 import SummaryScreen from "@/components/summary-screen";
-import { useCatApi } from "@/hooks/use-cat-api";
+import { useCatApiStatic } from "@/hooks/use-cat-api-static";
 import { AlertCircle, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,7 +21,7 @@ export default function CatMatch() {
   const [likedCats, setLikedCats] = useState<LikedCat[]>([]);
   const [gamePhase, setGamePhase] = useState<'playing' | 'summary'>('playing');
 
-  const { data: cats, isLoading, error, refetch } = useCatApi(10);
+  const { data: cats, isLoading, error, refetch } = useCatApiStatic(10);
 
   const handleLike = (cat: Cat) => {
     setLikedCats(prev => [...prev, { cat, index: currentCatIndex }]);
