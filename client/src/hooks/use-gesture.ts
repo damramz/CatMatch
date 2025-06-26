@@ -23,14 +23,13 @@ export function useGesture(
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       isDragging = true;
-      handlers.onStart?.(
-      );
+      handlers.onStart?.();
       e.preventDefault();
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (!isDragging) return;
-      
+
       const deltaX = e.touches[0].clientX - startX;
       const deltaY = e.touches[0].clientY - startY;
       handlers.onMove?.(deltaX, deltaY);
@@ -39,7 +38,7 @@ export function useGesture(
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (!isDragging) return;
-      
+
       isDragging = false;
       const deltaX = e.changedTouches[0].clientX - startX;
       const deltaY = e.changedTouches[0].clientY - startY;
@@ -57,7 +56,7 @@ export function useGesture(
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
-      
+
       const deltaX = e.clientX - startX;
       const deltaY = e.clientY - startY;
       handlers.onMove?.(deltaX, deltaY);
@@ -66,7 +65,7 @@ export function useGesture(
 
     const handleMouseUp = (e: MouseEvent) => {
       if (!isDragging) return;
-      
+
       isDragging = false;
       const deltaX = e.clientX - startX;
       const deltaY = e.clientY - startY;
@@ -81,25 +80,29 @@ export function useGesture(
     };
 
     // Add event listeners
-    element.addEventListener('touchstart', handleTouchStart, { passive: false });
-    element.addEventListener('touchmove', handleTouchMove, { passive: false });
-    element.addEventListener('touchend', handleTouchEnd, { passive: true });
+    element.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    element.addEventListener("touchmove", handleTouchMove, { passive: false });
+    element.addEventListener("touchend", handleTouchEnd, { passive: false });
+    element.addEventListener("touchcancel", handleTouchEnd, { passive: false });
 
-    element.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    element.addEventListener('mouseleave', handleMouseLeave);
+    element.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    element.addEventListener("mouseleave", handleMouseLeave);
 
     // Cleanup
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+      element.removeEventListener("touchstart", handleTouchStart);
+      element.removeEventListener("touchmove", handleTouchMove);
+      element.removeEventListener("touchend", handleTouchEnd);
+      element.removeEventListener("touchcancel", handleTouchEnd);
 
-      element.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      element.removeEventListener('mouseleave', handleMouseLeave);
+      element.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      element.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [elementRef, handlers]);
 }

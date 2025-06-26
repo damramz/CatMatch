@@ -9,7 +9,12 @@ interface CatCardProps {
   isTopCard: boolean;
 }
 
-export default function CatCard({ cat, onLike, onDislike, isTopCard }: CatCardProps) {
+export default function CatCard({
+  cat,
+  onLike,
+  onDislike,
+  isTopCard,
+}: CatCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [transform, setTransform] = useState({ x: 0, y: 0, rotation: 0 });
   const [showLikeIndicator, setShowLikeIndicator] = useState(false);
@@ -19,12 +24,12 @@ export default function CatCard({ cat, onLike, onDislike, isTopCard }: CatCardPr
   const handleMove = (deltaX: number, deltaY: number) => {
     const rotation = deltaX * 0.1;
     setTransform({ x: deltaX, y: deltaY, rotation });
-    
+
     // Show indicators based on swipe direction
-    if (deltaX > 50) {
+    if (deltaX > 30) {
       setShowLikeIndicator(true);
       setShowDislikeIndicator(false);
-    } else if (deltaX < -50) {
+    } else if (deltaX < -30) {
       setShowDislikeIndicator(true);
       setShowLikeIndicator(false);
     } else {
@@ -35,9 +40,9 @@ export default function CatCard({ cat, onLike, onDislike, isTopCard }: CatCardPr
 
   const handleEnd = (deltaX: number) => {
     setIsDragging(false);
-    
-    if (Math.abs(deltaX) > 80) {
-      // Swipe threshold met
+
+    if (Math.abs(deltaX) > 60) {
+      // Swipe threshold met - lowered from 80 to 60 for better mobile experience
       if (deltaX > 0) {
         // Animate card out to the right
         setTransform({ x: window.innerWidth, y: 0, rotation: 30 });
@@ -66,39 +71,43 @@ export default function CatCard({ cat, onLike, onDislike, isTopCard }: CatCardPr
   });
 
   return (
-    <div 
+    <div
       ref={cardRef}
       className={`absolute inset-0 bg-white rounded-2xl shadow-xl overflow-hidden cursor-grab active:cursor-grabbing ${
-        isTopCard ? 'z-20' : 'z-10'
-      } ${isDragging ? 'transition-none' : 'transition-transform duration-300 ease-out'}`}
+        isTopCard ? "z-20" : "z-10"
+      } ${
+        isDragging
+          ? "transition-none"
+          : "transition-transform duration-300 ease-out"
+      }`}
       style={{
         transform: `translateX(${transform.x}px) translateY(${transform.y}px) rotate(${transform.rotation}deg)`,
       }}
     >
       <div className="relative h-full">
-        <img 
-          src={cat.url} 
+        <img
+          src={cat.url}
           alt={cat.name}
           className="w-full h-4/5 object-cover"
           loading="lazy"
         />
-        
+
         <div className="p-4 h-1/5 flex items-center justify-center bg-gradient-to-t from-white to-transparent">
           <div className="text-center">
             <h3 className="font-semibold text-slate-700 text-lg">{cat.name}</h3>
             <p className="text-gray-600 text-sm">Ready for love!</p>
           </div>
         </div>
-        
+
         {/* Like Indicator */}
-        <div className={`like-indicator ${showLikeIndicator ? 'show' : ''}`}>
+        <div className={`like-indicator ${showLikeIndicator ? "show" : ""}`}>
           <div className="bg-red-500/90 text-white px-4 py-2 rounded-lg font-bold text-lg flex items-center">
             ❤️ <span className="ml-2">LIKE</span>
           </div>
         </div>
-        
+
         {/* Dislike Indicator */}
-        <div className={`like-indicator ${showDislikeIndicator ? 'show' : ''}`}>
+        <div className={`like-indicator ${showDislikeIndicator ? "show" : ""}`}>
           <div className="bg-red-400/90 text-white px-4 py-2 rounded-lg font-bold text-lg flex items-center">
             ✖️ <span className="ml-2">PASS</span>
           </div>
