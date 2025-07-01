@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(47, 9%, 15%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(47, 9%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(47, 9%, 15%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(9, 100%, 70%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(179, 62%, 60%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(47, 9%, 15%);
+  --radius: 0.5rem;
+  
+  /* Custom colors */
+  --coral: hsl(9, 100%, 70%);
+  --mint: hsl(179, 62%, 60%);
+  --sunshine: hsl(50, 100%, 70%);
+  --slate-blue: hsl(210, 29%, 24%);
+  --soft-red: hsl(9, 100%, 75%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(9, 100%, 70%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(179, 62%, 60%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .card-stack {
+    position: relative;
+    perspective: 1000px;
+  }
+  
+  .cat-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    transform-origin: center bottom;
+  }
+  
+  .cat-card.swiping {
+    transition: none;
+  }
+  
+  .cat-card.liked {
+    transform: translateX(100vw) rotate(30deg);
+    opacity: 0;
+  }
+  
+  .cat-card.disliked {
+    transform: translateX(-100vw) rotate(-30deg);
+    opacity: 0;
+  }
+  
+  .like-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease;
+    z-index: 10;
+  }
+  
+  .like-indicator.show {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .progress-bar {
+    transition: width 0.5s ease;
+  }
+  
+  .floating-hearts {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  
+  .heart {
+    position: absolute;
+    color: var(--coral);
+    animation: floatUp 2s ease-out forwards;
+  }
+  
+  @keyframes floatUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px) scale(1.5);
+    }
+  }
+  
+  .pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+  }
+}
